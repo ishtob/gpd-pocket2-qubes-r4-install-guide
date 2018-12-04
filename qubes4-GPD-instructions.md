@@ -13,22 +13,28 @@ sudo mount mmcblk0p1 /mnt/boot`
 7. find and copy down the uuid of your encrypted drive using `sudo lvs` it should start with `luks-`
 
 8. go into `sudo vi /mnt/boot/EFI/qubes/xen.cfg` and add the following to the line starting with `kernel=...`
-
 ` fbcon:rotate=1`
-
-if you are using full drive encryption
-and replace the value after `rd.luks.uuid=luks-` with the uuid you had written down earlier. 
-
-
+*** read below for full drive encryptions ***
 optional: currently I have not found a way to patch plymouth to rotate to the screen orientation, so if you care about the decryption dialog being sideways, you hide the graphical interface by removing `rhgb` from this line
 
-8. boot into the newly installed qubes and finish setting up the VMs.
+9. boot into the newly installed qubes and finish setting up the VMs.
+
+
+***********
+if you are using full drive encryption:
+
+During step 8: replace the value after `rd.luks.uuid=luks-` with the uuid you had written down earlier. 
+
+After setp 9: open up terminal in dom0. type `ls /dev/mapper/luk*` and copy down the value after 'luks-' `sudo nano /etc/crypttab` and replace the work `none` with the value copied from the previous command.
+
+***********
 
 
 *** Touchscreen orientation
 
- Use an appVM (ie. untrusted) and download the following it as zip https://github.com/stockmind/gpd-pocket-screen-indicator then copy the .zip to dom0 (please understand the security concerns with putting scripts in dom0, and review the code used for rotation to ensure your security)
+1. Use an appVM (ie. untrusted) and download the following it as zip https://github.com/stockmind/gpd-pocket-screen-indicator 
+2. Open a terminal in dom0 and use command line to copy `gpd-pocket-screen-indicator-master.zip` from the appVM to dom0(please understand the security concerns with putting scripts in dom0, and review the code used for rotation to ensure your security, instructions on how to do this can be found here: https://www.qubes-os.org/doc/copy-from-dom0/)
 
-unzip and run the install.sh
+3. unzip `gpd-pocket-screen-indicator-master.zip` then `cd gpd-pocket-screen-indicator-master` and run the the install script in root using `sudo ./install.sh`
 
-
+4. reboot and the touchscreen should now follow the orientation of the screen. additional steps are needed to get the widget to show up.
