@@ -35,10 +35,11 @@ During step 8: replace the value after `rd.luks.uuid=luks-` with the uuid you ha
 
 *** Hold right clicke to scroll
 
+create `nano ~/.xinitrc` and paste in
 
 ```
-# hold right button to scroll
-xinput --set-prop "Logitech USB Trackball" "Evdev Wheel Emulation" 1
-xinput --set-prop "Logitech USB Trackball" "Evdev Wheel Emulation Button" 3
-xinput --set-prop "Logitech USB Trackball" "Evdev Wheel Emulation Axes" 6 7 4 5
+# Simple hack to allow mouse scrolling when right click button is held down
+xinput --set-prop pointer:"HAILUCK CO.,LTD USB KEYBOARD Mouse" "libinput Middle Emulation Enabled" 1
+xinput --set-prop pointer:"HAILUCK CO.,LTD USB KEYBOARD Mouse" "libinput Button Scrolling Button" 3
+xinput --set-prop pointer:"HAILUCK CO.,LTD USB KEYBOARD Mouse" "libinput Scroll Method Enabled" 0 0 1
 ```
