@@ -19,7 +19,9 @@ optional: currently I have not found a way to patch plymouth to rotate to the sc
 ***********
 if you are using full drive encryption:
 
-During step 8: replace the value after `rd.luks.uuid=luks-` with the uuid you had written down earlier. press esc, then type `:wq` to exit.Next, enter `vi /mnt/sysimage/etc/crypttab` and replace the first `none` with the value copied from the previous command. and add `discard` if you wish to use trim
+During step 8: replace the value after `rd.luks.name=` with the uuid you had written down earlier and end with `=now`*. press esc, then type `:wq` to exit.Next, enter `vi /mnt/sysimage/etc/crypttab` and replace the first line withh `now`* followed by the UUID from earlier, then `none` and add `discard` if you wish to use trim
+
+* `now` can be any name you wish to name the drive, I personally like `now` as the decrypt prompt would say `Enter passphrase to unlock the disk now!:`
 
 ***********
 
@@ -33,13 +35,22 @@ During step 8: replace the value after `rd.luks.uuid=luks-` with the uuid you ha
 
 4. reboot and the touchscreen should now follow the orientation of the screen. additional steps are needed to get the widget to show up.
 
-*** Hold right clicke to scroll
 
-create `nano ~/.xinitrc` and paste in
+***********
+
+
+*** Hold right click to scroll with opticalmouse
+
+create `nano /etc/X11/xorg.conf.d/20-scroll-emu.conf' and paste in
 
 ```
-# Simple hack to allow mouse scrolling when right click button is held down
-xinput --set-prop pointer:"HAILUCK CO.,LTD USB KEYBOARD Mouse" "libinput Middle Emulation Enabled" 1
-xinput --set-prop pointer:"HAILUCK CO.,LTD USB KEYBOARD Mouse" "libinput Button Scrolling Button" 3
-xinput --set-prop pointer:"HAILUCK CO.,LTD USB KEYBOARD Mouse" "libinput Scroll Method Enabled" 0 0 1
+Section "InputClass"
+  Indentifier "optical scroll emulation"
+  MatchIsPointer  "on"
+  MatchProduct  "sys-usb: HAILUCK CO.,LTD USB KEYBOARD"
+  Driver  "libinput"
+  Option "ScrollMethod" "button"
+  Option "ScrollButton" "3"
+EndSection
 ```
+reboot to take effect
